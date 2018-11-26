@@ -1,0 +1,48 @@
+<html>
+  <body>
+    <script src="flex-sdk-web.js"></script>
+    <script>
+      flex.createToken({ /* options */ }, function(response) {
+        // use response
+      });
+
+      function onVisaCheckoutReady() {
+        V.init({
+          apikey: "{VISA_CHECKOUT_ID}",
+          paymentRequest:{
+            subtotal: "10.00",
+            currencyCode: "USD"
+          },
+          settings: {
+            displayName: "My Website"
+          }
+        });
+      }
+
+      V.on("payment.success", async payment => {
+        let response = await fetch("/charge", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(payment)
+        });
+      });
+
+
+
+      $(function(){
+        $("a").click(function(evt){
+        var link = $(this).attr("href");
+        setTimeout(function() {
+            window.location.href = link;
+        }, 1000);
+        });
+      });
+    </script>
+
+    <h1>Host: Los Angeles Convention Center</h1>
+    <p>Rate: $3/hr for parking</p>
+    <a href="loading.html">
+      <img alt="Visa Checkout" class="v-button" role="button" src="https://sandbox.secure.checkout.visa.com/wallet-services-web/xo/button.png">
+    </a>
+  </body>
+</html>
